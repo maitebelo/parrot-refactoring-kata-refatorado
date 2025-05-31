@@ -68,5 +68,17 @@ public class ParrotTest {
     public void getCryOfNorwegianBlueNoVoltage() {
         Parrot parrot = new Parrot(ParrotTypeEnum.NORWEGIAN_BLUE, 0, 0, false);
         assertEquals("...", parrot.getCry());
+    } 
+
+    @Test
+    public void getSpeedNorwegianBlueParrot_withNegativeVoltage() {
+        Parrot parrot = new Parrot(ParrotTypeEnum.NORWEGIAN_BLUE, 0, -1.5, false);
+        assertEquals(0.0, parrot.getSpeed(), 0.0);
     }
+
+    @Test
+    public void getSpeedAfricanParrot_withNegativeCoconuts() {
+        Parrot parrot = new Parrot(ParrotTypeEnum.AFRICAN, -1, 0, false);
+        assertEquals(21.0, parrot.getSpeed(), 0.0); 
+    } 
 }
