@@ -1,65 +1,31 @@
 package parrot;
 
-public class Parrot {
 
-    private final ParrotTypeEnum type;
-    private final int numberOfCoconuts;
-    private final double voltage;
-    private final boolean isNailed;
+public abstract class Parrot {
+    protected static final double BASE_SPEED = 12.0;
+    protected static final double MAX_SPEED = 24.0;
+    protected static final double MIN_SPEED = 0.0;
 
-    public Parrot(ParrotTypeEnum type, int numberOfCoconuts, double voltage, boolean isNailed) {
-        this.type = type;
-        this.numberOfCoconuts = numberOfCoconuts;
-        this.voltage = voltage;
-        this.isNailed = isNailed;
+
+    protected Parrot() {
     }
 
-    public double getSpeed() {
-        return switch (type) {
-            case EUROPEAN -> calculateEuropeanParrotSpeed();
-            case AFRICAN -> calculateAfricanParrotSpeed();
-            case NORWEGIAN_BLUE -> calculateNorwegianBlueParrotSpeed();
-        };
+
+    public abstract double getSpeed();
+    public abstract String getCry();
+
+
+    public static Parrot createEuropeanParrot() {
+        return new EuropeanParrot();
     }
 
-    private double calculateEuropeanParrotSpeed() {
-        return getBaseSpeed();
+
+    public static Parrot createAfricanParrot(int numberOfCoconuts) {
+        return new AfricanParrot(numberOfCoconuts);
     }
 
-    private double calculateAfricanParrotSpeed() {
-        double baseSpeed = getBaseSpeed();
-        double loadFactor = getLoadFactor();
-        double speedReduction = loadFactor * numberOfCoconuts;
-        return Math.max(0, baseSpeed - speedReduction);
-    }
 
-    private double calculateNorwegianBlueParrotSpeed() {
-        if (isNailed) {
-            return 0;
-        }
-        return getBaseSpeed(voltage);
-    }
-
-    private double getBaseSpeed(double voltage) {
-        if (voltage <= 0) {
-            return 0;
-        }
-        return Math.min(24.0, voltage * getBaseSpeed());
-    }
-
-    private double getLoadFactor() {
-        return 9.0;
-    }
-
-    private double getBaseSpeed() {
-        return 12.0;
-    }
-
-    public String getCry() {
-        return switch (type) {
-            case EUROPEAN -> "Sqoork!";
-            case AFRICAN -> "Sqaark!";
-            case NORWEGIAN_BLUE -> voltage > 0 ? "Bzzzzzz" : "...";
-        };
+    public static Parrot createNorwegianBlueParrot(double voltage, boolean isNailed) {
+        return new NorwegianBlueParrot(voltage, isNailed);
     }
 }
